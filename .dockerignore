@@ -1,0 +1,7 @@
+LICENSE
+README.md
+Dockerfile
+docker-compose.yml
+node_modules
+.nuxt
+.git
