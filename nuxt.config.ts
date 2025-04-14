@@ -29,6 +29,7 @@ export default defineNuxtConfig({
   ],
   plugins: [
     { src: '~/plugins/element-plus-icons.ts' },
+    { src: '~/plugins/axios', mode: 'client' },
   ],
   elementPlus: {
     themes: ['dark'],
