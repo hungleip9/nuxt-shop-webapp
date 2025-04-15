@@ -16,7 +16,12 @@
     align-center
     >
       <div>
-        <v-input v-model="from.name"/>
+        <el-form-item label="name" prop="name">
+          <v-input
+            v-model="from.name"
+            type="text"
+          />
+        </el-form-item>
       </div>
       <template #footer>
         <div class="dialog-footer">
