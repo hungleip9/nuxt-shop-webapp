@@ -9,10 +9,11 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/icon',
     '@nuxt/fonts',
-    '@element-plus/nuxt',
     '@nuxtjs/tailwindcss',
+    '@element-plus/nuxt',
     '@nuxtjs/color-mode',
-    '@vueuse/nuxt'
+    '@vueuse/nuxt',
+    '@pinia/nuxt'
   ],
   colorMode: {
     preference: 'system', // mặc định là 'system'
@@ -25,7 +26,8 @@ export default defineNuxtConfig({
     '@/assets/css/tailwind.css',
     '@/assets/scss/element-ui.scss',
     '@/assets/scss/style.scss',
-    'element-plus/theme-chalk/dark/css-vars.css'
+    'element-plus/theme-chalk/dark/css-vars.css',
+    'element-plus/dist/index.css'
   ],
   plugins: [
     { src: '~/plugins/element-plus-icons.ts' },

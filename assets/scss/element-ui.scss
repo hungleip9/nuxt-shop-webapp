@@ -1,0 +1,19 @@
+.el-form-item--label-top {
+  .el-form-item__label {
+    margin-bottom: 3px!important;
+  }
+}
+.example-showcase {
+  .el-dropdown-link {
+    cursor: pointer;
+    color: var(--el-color-primary)!important;
+    display: flex;
+    align-items: center;
+  }
+}
+.el-dropdown {
+  outline: none!important;
+  .el-dropdown-link{
+    outline: none!important;
+  }
+}

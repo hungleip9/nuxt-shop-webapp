@@ -1,6 +1,14 @@
 <script lang="ts" setup>
 const model = defineModel()
 const props = defineProps({
+  label: {
+    type: String,
+    default: ''
+  },
+  prop: {
+    type: String,
+    default: ''
+  },
   placeholder: {
     type: String,
     default: 'Nhập'
@@ -22,22 +30,25 @@ const props = defineProps({
   autosize: {
     type: null,
     default: { minRows: 2, maxRows: 4 }
+  },
+  rules: {
+    type: null,
   }
 });
 const typeMap = ref('text')
 watch(() => props.type, () => {
-  if (props.type != 'textarea') {
+  if (props.type == 'number') {
     typeMap.value = 'text'
     return
   }
-  typeMap.value = 'textarea'
+  typeMap.value = props.type
 })
 onMounted(() => {
-  if (props.type != 'textarea') {
+  if (props.type == 'number') {
     typeMap.value = 'text'
     return
   }
-  typeMap.value = 'textarea'
+  typeMap.value = props.type
 })
 function onlyNumber (event: any) {
   if (props.type != 'number') return
@@ -52,14 +63,21 @@ function onlyNumber (event: any) {
 </script>
 
 <template>
-  <el-input
-    v-model="model"
-    style="width: 240px"
-    :maxlength="maxlength"
-    :minlength="minlength"
-    :placeholder="placeholder"
-    :type="typeMap"
-    :autosize="autosize"
-    @keypress="onlyNumber($event)"
-  />
+  <el-form-item
+    :label="label"
+    label-position="top"
+    :prop="prop"
+    :rules="rules">
+    <el-input
+      v-model="model"
+      style="width: 240px"
+      :maxlength="maxlength"
+      :minlength="minlength"
+      :placeholder="placeholder"
+      :type="typeMap"
+      :autosize="autosize"
+      :show-password="typeMap == 'password'"
+      @keypress="onlyNumber($event)"
+    />
+  </el-form-item>
 </template>

@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { handleGetInfo } from '~~/services/header';
 const emit = defineEmits(["showHide"]);
 const colorMode = useColorMode()
+const loading = ref(true)
+onMounted(async () => {
+  loading.value = true
+  await handleGetInfo()
+  loading.value = false
+})
 function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
@@ -12,9 +19,10 @@ function toggleColorMode() {
       <span @click="emit('showHide')" class="cursor-pointer">Header</span>
     </div>
     <client-only>
-      <div class="flex flex-row item-center justify-center">
+      <div class="flex flex-row items-center justify-center">
+        {{ loading }}
         <HeaderLogin />
-        <div class="flex flex-row item-center justify-center ml-2">
+        <div class="flex flex-row items-center justify-center ml-2">
           <Icon v-if="colorMode.value === 'dark'"
             name="line-md:sun-rising-loop"
             class="cursor-pointer"

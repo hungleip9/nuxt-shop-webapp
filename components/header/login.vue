@@ -1,40 +1,56 @@
 <script setup lang="ts">
-  const dialogVisible = ref(false)
-  const from = ref({
-    name: ''
-  })
+import { logout } from '~~/services/header';
+import type { DropdownInstance } from 'element-plus'
+const auth = useAuth();
+const dropdownActionUser = ref<DropdownInstance>()
+const openModal = (type = "") => {
+  if (!type) return;
+  _pushParamsRouter("type_modal_login", type);
+};
+const handleLogout = async() => {
+  await auth.setInfo(null)
+  await auth.logout()
+  _keyLocalStorage({ type: 'SET', key: 'token', value: '' })
+  _keyLocalStorage({ type: 'SET', key: 'refresh', value: '' })
+  await logout()
+}
+const showDropdownActionUser = () => {
+  if (!dropdownActionUser.value) return
+  dropdownActionUser.value.handleOpen()
+}
 </script>
 
 <template>
-  <div>
-    <Icon class="cursor-pointer" name="bi:person" size="20px" @click="dialogVisible = true"/>
-    <!-- modal -->
-    <el-dialog
-    v-model="dialogVisible"
-    title="Đăng nhập"
-    width="70vw"
-    align-center
-    >
-      <div>
-        <el-form-item label="name" prop="name">
-          <v-input
-            v-model="from.name"
-            type="text"
-          />
-        </el-form-item>
-      </div>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button @click="dialogVisible = false">Thoát</el-button>
-          <el-button type="primary" @click="dialogVisible = false">
-            Đăng nhập
-          </el-button>
-        </div>
+  <div class="flex flex-row items-center justify-center">
+    <Icon
+      v-show="!auth.infoUser"
+      class="cursor-pointer"
+      name="bi:person"
+      size="20px"
+      @click="openModal('sign-in')"
+    />
+    <el-dropdown ref="dropdownActionUser" trigger="contextmenu">
+      <span v-show="auth.infoUser"
+        @click="showDropdownActionUser()"
+        class="el-dropdown-link">
+        {{ auth?.infoUser?.userName || auth?.infoUser?.email || "" }}
+      </span>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item @click="handleLogout()">
+            <Icon
+              class="mr-2"
+              name="line-md:log-out"
+              size="20px"
+            />
+            Đăng xuất
+          </el-dropdown-item>
+        </el-dropdown-menu>
       </template>
-    </el-dialog>
+    </el-dropdown>
+    <!-- modal -->
+    <HeaderModalLogin />
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

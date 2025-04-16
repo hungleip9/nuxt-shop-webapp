@@ -1,26 +1,41 @@
 <template>
-  <el-button plain @click="centerDialogVisible = true">
-    Click to open the Dialog
-  </el-button>
-
-  <el-dialog
-    v-model="centerDialogVisible"
-    title="Warning"
-    width="500"
-    align-center
-  >
-    <span>Open the dialog from the center from the screen</span>
-    <template #footer>
-      <div class="dialog-footer">
-        <el-button @click="centerDialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="centerDialogVisible = false">
-          Confirm
-        </el-button>
-      </div>
+  <el-dropdown>
+    <span class="el-dropdown-link">
+      Dropdown List<el-icon class="el-icon--right"><arrow-down /></el-icon>
+    </span>
+    <template #dropdown>
+      <el-dropdown-menu>
+        <el-dropdown-item :icon="Plus">Action 1</el-dropdown-item>
+        <el-dropdown-item :icon="CirclePlusFilled"> Action 2 </el-dropdown-item>
+        <el-dropdown-item :icon="CirclePlus">Action 3</el-dropdown-item>
+        <el-dropdown-item :icon="Check">Action 4</el-dropdown-item>
+        <el-dropdown-item :icon="CircleCheck">Action 5</el-dropdown-item>
+      </el-dropdown-menu>
     </template>
-  </el-dialog>
+  </el-dropdown>
 </template>
 
 <script lang="ts" setup>
-const centerDialogVisible = ref(false)
+import {
+  ArrowDown,
+  Check,
+  CircleCheck,
+  CirclePlus,
+  CirclePlusFilled,
+  Plus,
+} from "@element-plus/icons-vue";
 </script>
+
+<style scoped>
+.block-col-2 .demonstration {
+  display: block;
+  color: var(--el-text-color-secondary);
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+
+.block-col-2 .el-dropdown-link {
+  display: flex;
+  align-items: center;
+}
+</style>

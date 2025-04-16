@@ -1,11 +1,15 @@
 import axios from 'axios';
 
 export default defineNuxtPlugin(async () => {
+  const auth = useAuth()
   const config = useRuntimeConfig();
-  const auth = useAuth().value
   const baseUrl = config.public.BASE_API ? `${config.public.BASE_API}` : '';
   const token = _keyLocalStorage({ type: 'GET', key: 'token' });
-  auth.isAuthenticated = token ? true : false;
+  if (token) {
+    auth.login()
+  } else {
+    auth.logout()
+  }
   const api = axios.create({
     baseURL: baseUrl,
   });
@@ -38,7 +42,7 @@ export default defineNuxtPlugin(async () => {
           const res = await refreshApi.get(`${baseUrl}/api/auth/refresh/${refresh}`);
           _keyLocalStorage({ type: 'SET', key: 'token', value: res.data.data.token });
           _keyLocalStorage({ type: 'SET', key: 'refresh', value: res.data.data.refresh });
-          auth.isAuthenticated = true;
+          auth.login()
           config.headers.Authorization = `Bearer ${res.data.data.token}`;
           isRefreshToken = false;
           // Thực hiện lại yêu cầu ban đầu với token mới
