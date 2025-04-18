@@ -11,7 +11,7 @@ const props = defineProps({
   },
   placeholder: {
     type: String,
-    default: 'Nhập'
+    default: ''
   },
   maxlength: {
     type: null,
@@ -70,10 +70,9 @@ function onlyNumber (event: any) {
     :rules="rules">
     <el-input
       v-model="model"
-      style="width: 240px"
       :maxlength="maxlength"
       :minlength="minlength"
-      :placeholder="placeholder"
+      :placeholder="placeholder ? placeholder : `Nhập ${label ? label.toLowerCase() : ''}`"
       :type="typeMap"
       :autosize="autosize"
       :show-password="typeMap == 'password'"

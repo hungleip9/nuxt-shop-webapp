@@ -2,7 +2,7 @@
   <el-dialog
     v-model="dialogVisible"
     :title="titleModal"
-    width="70vw"
+    width="300px"
     align-center
     :close-on-click-modal="false"
     @close="close"

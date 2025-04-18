@@ -3,6 +3,7 @@ import { handleGetInfo } from '~~/services/header';
 const emit = defineEmits(["showHide"]);
 const colorMode = useColorMode()
 const loading = ref(true)
+const isCollapse = _useCookie('isCollapse') as any;
 onMounted(async () => {
   loading.value = true
   await handleGetInfo()
@@ -15,13 +16,18 @@ function toggleColorMode() {
 
 <template>
   <div class="w-full h-full flex flex-row items-center justify-between">
-    <div class="flex-1">
-      <span @click="emit('showHide')" class="cursor-pointer">Header</span>
+    <div class="flex-1 flex flex-row items-center">
+      <el-icon class="mr-2 cursor-pointer" :size="25" @click="emit('showHide')">
+        <fold v-show="!isCollapse"/>
+        <expand v-show="isCollapse"/>
+      </el-icon>
+      <NuxtLink :to="'/'">
+        <span class="cursor-pointer">Header</span>
+      </NuxtLink>
     </div>
     <client-only>
       <div class="flex flex-row items-center justify-center">
-        {{ loading }}
-        <HeaderLogin />
+        <HeaderLogin v-show="!loading"/>
         <div class="flex flex-row items-center justify-center ml-2">
           <Icon v-if="colorMode.value === 'dark'"
             name="line-md:sun-rising-loop"
