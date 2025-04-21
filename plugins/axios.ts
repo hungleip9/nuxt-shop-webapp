@@ -3,6 +3,7 @@ import axios from 'axios';
 export default defineNuxtPlugin(async () => {
   const auth = useAuth()
   const config = useRuntimeConfig();
+  console.log('config: ', config)
   const baseUrl = config.public.BASE_API ? `${config.public.BASE_API}` : '';
   const token = _keyLocalStorage({ type: 'GET', key: 'token' });
   if (token) {
