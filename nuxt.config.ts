@@ -13,7 +13,7 @@ export default defineNuxtConfig({
     '@element-plus/nuxt',
     '@nuxtjs/color-mode',
     '@vueuse/nuxt',
-    '@pinia/nuxt'
+    '@pinia/nuxt',
   ],
   colorMode: {
     preference: 'system', // mặc định là 'system'
@@ -57,4 +57,12 @@ export default defineNuxtConfig({
       BASE_API: '',
     },
   },
+  vite: {
+    optimizeDeps: {
+      include: ['dayjs/plugin/localeData']
+    }
+  },
+  build: {
+    transpile: ['element-plus/es']
+  }
 })

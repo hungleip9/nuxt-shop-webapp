@@ -1,37 +1,38 @@
 <script lang="ts" setup>
-const isCollapse = _useCookie('isCollapse') as any;
-const isSmallScreen = useMediaQuery('(max-width: 768px)')
-watch(isSmallScreen, (isSmall) => {
-  if (isSmall) {
-    isCollapse.value = true;
-  }
-}, { immediate: true });
+const isCollapse = _useCookie("isCollapse") as any;
+const isSmallScreen = useMediaQuery("(max-width: 768px)");
+const route = useRoute();
+watch(
+  isSmallScreen,
+  (isSmall) => {
+    if (isSmall) {
+      isCollapse.value = true;
+    }
+  },
+  { immediate: true }
+);
 </script>
 
 <template>
   <el-container class="layout-container-demo w-full h-full">
     <el-menu
-      default-active="1"
-      class="el-menu-vertical-demo"
+      :default-active="route.path"
+      class="el-menu-demo"
       :collapse="isCollapse"
     >
-      <el-menu-item index="1">
+      <el-menu-item index="/" @click="navigateTo('/')">
         <el-icon><icon-menu /></el-icon>
-        <template #title>Menu 1</template>
+        <template #title>Trang chủ</template>
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="/demo" @click="navigateTo('/demo')">
         <el-icon><icon-menu /></el-icon>
-        <template #title>Menu 2</template>
-      </el-menu-item>
-      <el-menu-item index="3">
-        <el-icon><icon-menu /></el-icon>
-        <template #title>Menu 3</template>
+        <template #title>Demo</template>
       </el-menu-item>
     </el-menu>
 
     <el-container>
       <el-header class="box-header">
-        <Header @showHide="isCollapse = !isCollapse"/>
+        <Header @showHide="isCollapse = !isCollapse" />
       </el-header>
       <el-main> <slot /> </el-main>
     </el-container>
