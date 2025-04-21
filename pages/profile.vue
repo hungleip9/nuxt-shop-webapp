@@ -1,11 +1,13 @@
 <template>
   <div class="w-full h-full">
+    <ProfileUploadAvatar v-model="ruleForm.photo"/>
     <el-form
       ref="ruleFormRef"
       :model="ruleForm"
       label-width="auto"
       class="demo-ruleForm"
       :size="formSize"
+      :rules="rules"
     >
       <el-row :gutter="10">
         <el-col :xs="24" :lg="12">
@@ -61,7 +63,7 @@
             :loading="loadingBtn"
             @click="submitForm()"
           >
-            Cap nhật
+            Cập nhật
           </el-button>
         </el-col>
       </el-row>
@@ -70,11 +72,12 @@
 </template>
 
 <script setup lang="ts">
-import type { ComponentSize, FormInstance } from "element-plus";
+import type { ComponentSize, FormInstance, FormRules } from "element-plus";
 const formSize = ref<ComponentSize>("default");
 const ruleFormRef = ref<FormInstance>();
 const loadingBtn = ref(false);
 interface RuleForm {
+  photo: string;
   address: string;
   dateOfBirth: string;
   email: string;
@@ -82,11 +85,26 @@ interface RuleForm {
   idNumber: string;
 }
 const ruleForm = reactive<RuleForm>({
+  photo: "",
   address: "",
   dateOfBirth: "",
   email: "",
   fullName: "",
   idNumber: "",
+});
+const rules = reactive<FormRules<RuleForm>>({
+  email: [
+    {
+      validator: (rule, value, callback) => {
+        if (value && !emailRegex.test(value)) {
+          callback(new Error("Email không đúng định dạng"));
+        } else {
+          callback();
+        }
+      },
+      trigger: "change",
+    },
+  ]
 });
 
 const submitForm = async () => {
@@ -100,6 +118,7 @@ const submitForm = async () => {
 };
 const handleReset = async () => {
   Object.assign(ruleForm, {
+    photo: "",
     address: "",
     dateOfBirth: "",
     email: "",

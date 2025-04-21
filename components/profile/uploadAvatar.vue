@@ -1,5 +1,6 @@
 <template>
-  <div class="avatar-upload">
+  <div class="avatar-upload mb-2">
+    Avatar
     <el-upload
       action="#"
       list-type="picture-card"
@@ -16,30 +17,23 @@
         </el-icon>
         
         <!-- Action buttons that appear on hover -->
-        <div v-if="imageUrl" class="action-buttons">
-          <div class="action-icon preview-icon" @click.stop="openPreview">
-            <el-icon :size="18"><ZoomIn /></el-icon>
-          </div>
-          <div class="action-icon delete-icon" @click.stop="removeImage">
-            <el-icon :size="18"><Delete /></el-icon>
+        <div class="box-action-btn">
+          <div v-if="imageUrl" class="action-buttons">
+            <div class="action-icon preview-icon" @click.stop="openPreview">
+              <el-icon :size="18"><ZoomIn /></el-icon>
+            </div>
+            <div class="action-icon delete-icon" @click.stop="removeImage">
+              <el-icon :size="18"><Delete /></el-icon>
+            </div>
           </div>
         </div>
       </div>
     </el-upload>
 
     <!-- Preview Dialog -->
-    <el-dialog v-model="previewVisible" title="Image Preview" width="600px">
+    <el-dialog v-model="previewVisible" title="Image Preview" width="700px">
       <img :src="imageUrl" class="preview-image" />
     </el-dialog>
-
-    <div class="avatar-actions" v-if="imageUrl">
-      <el-button type="primary" @click="submitUpload">Upload Avatar</el-button>
-    </div>
-
-    <div class="avatar-hint" v-if="!imageUrl">
-      <p>Click to upload your avatar (JPG, PNG or GIF)</p>
-      <p>Max file size: 2MB</p>
-    </div>
   </div>
 </template>
 
@@ -47,7 +41,7 @@
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue'
 import type { UploadFile, UploadFiles, UploadProps } from 'element-plus'
 
-const imageUrl = ref('')
+const imageUrl = defineModel()
 const file = ref<File | null>(null)
 const previewVisible = ref(false)
 
@@ -90,24 +84,9 @@ const removeImage = () => {
 const openPreview = () => {
   previewVisible.value = true
 }
-
-const submitUpload = async () => {
-  if (!file.value) {
-    ElMessage.warning('Please select an image first')
-    return
-  }
-  
-  try {
-    // Your upload logic here
-    ElMessage.success('Avatar uploaded successfully!')
-  } catch (error) {
-    ElMessage.error('Failed to upload avatar')
-    console.error('Upload error:', error)
-  }
-}
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .avatar-upload {
   display: flex;
   flex-direction: column;
@@ -125,7 +104,7 @@ const submitUpload = async () => {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 6px;
+  border-radius: 50%;
 }
 
 .avatar-uploader-icon {
@@ -135,13 +114,32 @@ const submitUpload = async () => {
   height: 148px;
   text-align: center;
 }
-
-.action-buttons {
+.box-action-btn {
   position: absolute;
-  top: 6px;
-  right: 6px;
-  display: flex;
-  gap: 4px;
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+  cursor: default;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  opacity: 0;
+  font-size: 20px;
+  background-color: var(--el-overlay-color-lighter);
+  transition: opacity var(--el-transition-duration);
+  &:hover {
+    opacity: 1;
+  }
+  .action-buttons {
+    position: absolute;
+    top: 50%; /* Đưa lên giữa theo chiều dọc */
+    left: 50%; /* Đưa vào giữa theo chiều ngang */
+    transform: translate(-50%, -50%); /* Căn chính xác tâm */
+    display: flex;
+    gap: 10px; /* Tăng khoảng cách giữa các icon */
+  }
 }
 
 .action-icon {
@@ -190,7 +188,7 @@ const submitUpload = async () => {
 
 :deep(.el-upload) {
   border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
+  border-radius: 50%;
   cursor: pointer;
   position: relative;
   overflow: hidden;
