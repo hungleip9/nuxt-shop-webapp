@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { handleGetInfo } from '~~/services/header';
+import {
+  Fold,
+  Expand
+} from '@element-plus/icons-vue'
 const emit = defineEmits(["showHide"]);
 const colorMode = useColorMode()
 const loading = ref(true)
@@ -18,8 +22,8 @@ function toggleColorMode() {
   <div class="w-full h-full flex flex-row items-center justify-between">
     <div class="flex-1 flex flex-row items-center">
       <el-icon class="mr-2 cursor-pointer" :size="25" @click="emit('showHide')">
-        <fold v-show="!isCollapse"/>
-        <expand v-show="isCollapse"/>
+        <Fold v-show="!isCollapse"/>
+        <Expand v-show="isCollapse"/>
       </el-icon>
       <NuxtLink :to="'/'">
         <span class="cursor-pointer">Header</span>

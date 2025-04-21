@@ -30,7 +30,6 @@ export default defineNuxtConfig({
     'element-plus/dist/index.css'
   ],
   plugins: [
-    { src: '~/plugins/element-plus-icons.ts' },
     { src: '~/plugins/axios', mode: 'client' },
   ],
   elementPlus: {

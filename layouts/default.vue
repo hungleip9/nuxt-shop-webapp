@@ -1,4 +1,8 @@
 <script lang="ts" setup>
+import { 
+  Menu
+} from '@element-plus/icons-vue';
+
 const isCollapse = _useCookie("isCollapse") as any;
 const isSmallScreen = useMediaQuery("(max-width: 768px)");
 const route = useRoute();
@@ -17,15 +21,15 @@ watch(
   <el-container class="layout-container-demo w-full h-full">
     <el-menu
       :default-active="route.path"
-      class="el-menu-demo"
+      class="el-menu-vertical"
       :collapse="isCollapse"
     >
       <el-menu-item index="/" @click="navigateTo('/')">
-        <el-icon><icon-menu /></el-icon>
+        <el-icon><Menu /></el-icon>
         <template #title>Trang chủ</template>
       </el-menu-item>
       <el-menu-item index="/demo" @click="navigateTo('/demo')">
-        <el-icon><icon-menu /></el-icon>
+        <el-icon><Menu /></el-icon>
         <template #title>Demo</template>
       </el-menu-item>
     </el-menu>
@@ -40,7 +44,7 @@ watch(
 </template>
 
 <style lang="scss" scoped>
-.el-menu-vertical-demo:not(.el-menu--collapse) {
+.el-menu-vertical:not(.el-menu--collapse) {
   width: 200px;
 }
 .box-header {
