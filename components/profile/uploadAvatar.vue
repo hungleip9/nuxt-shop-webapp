@@ -11,14 +11,14 @@
       accept="image/png,image/jpeg,image/jpg,image/gif"
     >
       <div class="avatar-container">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+        <img v-if="imageUrl || firstImg" :src="imageUrl ? imageUrl : firstImg" class="avatar" />
         <el-icon v-else class="avatar-uploader-icon">
           <Plus />
         </el-icon>
         
         <!-- Action buttons that appear on hover -->
         <div class="box-action-btn">
-          <div v-if="imageUrl" class="action-buttons">
+          <div v-if="imageUrl || firstImg" class="action-buttons">
             <div class="action-icon preview-icon" @click.stop="openPreview">
               <el-icon :size="18"><ZoomIn /></el-icon>
             </div>
@@ -32,7 +32,7 @@
 
     <!-- Preview Dialog -->
     <el-dialog v-model="previewVisible" title="Image Preview" width="700px">
-      <img :src="imageUrl" class="preview-image" />
+      <img :src="imageUrl ? imageUrl : firstImg" class="preview-image" />
     </el-dialog>
   </div>
 </template>
@@ -40,8 +40,14 @@
 <script setup lang="ts">
 import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue'
 import type { UploadFile, UploadFiles, UploadProps } from 'element-plus'
+const props = defineProps({
+  firstImg: {
+    type: String,
+    default: "",
+  }
+})
 
-const imageUrl = defineModel()
+const imageUrl = defineModel() as any
 const file = ref<File | null>(null)
 const previewVisible = ref(false)
 

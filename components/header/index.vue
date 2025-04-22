@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { handleGetInfo } from '~~/services/header';
 import {
   Fold,
   Expand
 } from '@element-plus/icons-vue'
 const emit = defineEmits(["showHide"]);
 const colorMode = useColorMode()
-const loading = ref(true)
 const isCollapse = _useCookie('isCollapse') as any;
-onMounted(async () => {
-  loading.value = true
-  await handleGetInfo()
-  loading.value = false
-})
+const global = useGlobal()
 function toggleColorMode() {
   colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark'
 }
@@ -31,7 +25,7 @@ function toggleColorMode() {
     </div>
     <client-only>
       <div class="flex flex-row items-center justify-center">
-        <HeaderLogin v-show="!loading"/>
+        <HeaderLogin v-show="!global.loadingApp"/>
         <div class="flex flex-row items-center justify-center ml-2">
           <Icon v-if="colorMode.value === 'dark'"
             name="line-md:sun-rising-loop"

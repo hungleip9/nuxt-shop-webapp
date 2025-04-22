@@ -20,6 +20,10 @@ export async function info() {
   const axios = useNuxtApp().$axios
   return await axios.get(`/api/auth/info`)
 }
+export async function updateInfo(data: {address: string, dateOfBirth: string, fullName: string, idNumber: string, imageFile: any}) {
+  const axios = useNuxtApp().$axios
+  return await axios.post(`/api/auth/info`, data)
+}
 export const handleGetInfo = async () => {
   const auth = useAuth()
   if (!auth.isAuthenticated) return

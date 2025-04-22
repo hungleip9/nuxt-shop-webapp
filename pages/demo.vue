@@ -1,203 +1,49 @@
 <template>
-  <div class="avatar-upload">
-    <el-upload
-      action="#"
-      list-type="picture-card"
-      :auto-upload="false"
-      :show-file-list="false"
-      :on-change="handleChange"
-      :before-upload="beforeUpload"
-      accept="image/png,image/jpeg,image/jpg,image/gif"
-    >
-      <div class="avatar-container">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar" />
-        <el-icon v-else class="avatar-uploader-icon">
-          <Plus />
-        </el-icon>
-        
-        <!-- Action buttons that appear on hover -->
-        <div v-if="imageUrl" class="action-buttons">
-          <div class="action-icon preview-icon" @click.stop="openPreview">
-            <el-icon :size="18"><ZoomIn /></el-icon>
-          </div>
-          <div class="action-icon delete-icon" @click.stop="removeImage">
-            <el-icon :size="18"><Delete /></el-icon>
-          </div>
-        </div>
-      </div>
-    </el-upload>
-
-    <!-- Preview Dialog -->
-    <el-dialog v-model="previewVisible" title="Image Preview" width="600px">
-      <img :src="imageUrl" class="preview-image" />
-    </el-dialog>
-
-    <div class="avatar-actions" v-if="imageUrl">
-      <el-button type="primary" @click="submitUpload">Upload Avatar</el-button>
-    </div>
-
-    <div class="avatar-hint" v-if="!imageUrl">
-      <p>Click to upload your avatar (JPG, PNG or GIF)</p>
-      <p>Max file size: 2MB</p>
+  <div class="demo-date-picker">
+    <div class="block">
+      <span class="demonstration">Default - {{ value1 }}</span>
+      <el-date-picker
+        v-model="value1"
+        type="date"
+        placeholder="Pick a day"
+        :size="size"
+        format="DD-MM-YYYY"
+        value-format="X"
+      />
     </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { Plus, Delete, ZoomIn } from '@element-plus/icons-vue'
-import type { UploadFile, UploadFiles, UploadProps } from 'element-plus'
+<script lang="ts" setup>
 
-const imageUrl = ref('')
-const file = ref<File | null>(null)
-const previewVisible = ref(false)
+const size = ref<'default' | 'large' | 'small'>('default')
 
-const handleChange: UploadProps['onChange'] = (uploadFile: UploadFile, uploadFiles: UploadFiles) => {
-  const rawFile = uploadFile.raw as File
-  
-  // Validate file type
-  const isValidType = ['image/jpeg', 'image/png', 'image/gif'].includes(rawFile.type)
-  if (!isValidType) {
-    ElMessage.error('Avatar must be JPG, PNG or GIF!')
-    return
-  }
-  
-  // Validate file size (2MB)
-  const isLt2M = rawFile.size / 1024 / 1024 < 2
-  if (!isLt2M) {
-    ElMessage.error('Avatar size must be less than 2MB!')
-    return
-  }
-  
-  // Create preview
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    imageUrl.value = e.target?.result as string
-  }
-  reader.readAsDataURL(rawFile)
-  
-  file.value = rawFile
-}
-
-const beforeUpload: UploadProps['beforeUpload'] = (rawFile: File) => {
-  return false
-}
-
-const removeImage = () => {
-  imageUrl.value = ''
-  file.value = null
-}
-
-const openPreview = () => {
-  previewVisible.value = true
-}
-
-const submitUpload = async () => {
-  if (!file.value) {
-    ElMessage.warning('Please select an image first')
-    return
-  }
-  
-  try {
-    // Your upload logic here
-    ElMessage.success('Avatar uploaded successfully!')
-  } catch (error) {
-    ElMessage.error('Failed to upload avatar')
-    console.error('Upload error:', error)
-  }
-}
+const value1 = ref('')
 </script>
 
 <style scoped>
-.avatar-upload {
+.demo-date-picker {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
-
-.avatar-container {
-  position: relative;
-  width: 148px;
-  height: 148px;
-}
-
-.avatar {
   width: 100%;
-  height: 100%;
-  object-fit: cover;
-  border-radius: 6px;
+  padding: 0;
+  flex-wrap: wrap;
 }
 
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 148px;
-  height: 148px;
+.demo-date-picker .block {
+  padding: 30px 0;
   text-align: center;
+  border-right: solid 1px var(--el-border-color);
+  flex: 1;
 }
 
-.action-buttons {
-  position: absolute;
-  top: 6px;
-  right: 6px;
-  display: flex;
-  gap: 4px;
+.demo-date-picker .block:last-child {
+  border-right: none;
 }
 
-.action-icon {
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
-  border-radius: 50%;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-
-.preview-icon:hover {
-  background-color: rgba(32, 160, 255, 0.8);
-}
-
-.delete-icon:hover {
-  background-color: rgba(245, 108, 108, 0.8);
-}
-
-.avatar-container:hover .action-icon {
-  opacity: 1;
-}
-
-.avatar-actions {
-  margin-top: 12px;
-}
-
-.avatar-hint {
+.demo-date-picker .demonstration {
+  display: block;
   color: var(--el-text-color-secondary);
-  font-size: 12px;
-  text-align: center;
-  margin-top: 8px;
-}
-
-.preview-image {
-  width: 100%;
-  height: auto;
-  max-height: 70vh;
-  object-fit: contain;
-}
-
-:deep(.el-upload) {
-  border: 1px dashed var(--el-border-color);
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  transition: var(--el-transition-duration-fast);
-}
-
-:deep(.el-upload:hover) {
-  border-color: var(--el-color-primary);
+  font-size: 14px;
+  margin-bottom: 20px;
 }
 </style>
